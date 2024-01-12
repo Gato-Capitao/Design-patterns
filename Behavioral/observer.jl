@@ -1,12 +1,15 @@
-struct Point
-    x::Float64
-    y::Float64
-end
-function distance(p1::Point, p2::Point)
-    return sqrt((p1.x - p2.x)^2 + (p1.y - p2.y)^2)
-end
+using Base
 
-p1 = Point(1.0, 2.0)
-p2 = Point(3.0, 4.0)
+# Cria um Vector de números inteiros
+vector = Base.Vector()
 
-println(distance(p1, p2))
+# Adiciona elementos ao Vector
+vector = push!(vector, UInt8(1))
+vector = push!(vector, UInt8(2))
+vector = push!(vector, UInt8(3))
+
+vector[1] = 2
+
+# Imprime o Vector
+println(vector)
+
