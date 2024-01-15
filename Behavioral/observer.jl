@@ -1,15 +1,36 @@
-using Base
+abstract type Observer end
 
-# Cria um Vector de números inteiros
-vector = Base.Vector()
+struct ConcreteObserver <: Observer
+    name::String
+end
 
-# Adiciona elementos ao Vector
-vector = push!(vector, UInt8(1))
-vector = push!(vector, UInt8(2))
-vector = push!(vector, UInt8(3))
+function update(observer::ConcreteObserver, message::String)
+    println("The observer $(observer.name) received the message $(message)")
+end
 
-vector[1] = 2
+abstract type Subject end
 
-# Imprime o Vector
-println(vector)
+struct ConcreteSubject{T} <: Subject
+    observers::Vector{T}
+    state::String
+end
 
+function addObserver(subject::ConcreteSubject, observer::ConcreteObserver)
+    push!(subject.observers, observer)
+end
+
+function notifyObserver(subject::ConcreteSubject, message::String)
+    for observer in subject.observers
+        update(observer, message)
+    end
+end
+
+obs1 = ConcreteObserver("Observer 1")
+obs2 = ConcreteObserver("Observer 2")
+
+subject = ConcreteSubject{ConcreteObserver}([], "Initial State")
+
+addObserver(subject, obs1)
+addObserver(subject, obs2)
+
+notifyObserver(subject, "state change to new state")
