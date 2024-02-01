@@ -32,3 +32,17 @@ class Memento
     end
 end
 
+class ConcreteMemento < Memento
+    def initialize(text)
+        @text = text
+        @date = Time.now.strftime('%F %T')
+    end
+
+    attr_reader: state
+
+    def name
+        "#{@date}: #{@state}"
+    end
+
+    attr_reader: date
+end
