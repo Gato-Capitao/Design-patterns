@@ -1,13 +1,34 @@
-def fatorial(num)
-    dp = Array.new(num+1)
+class Document
+    attr_acessor: text
 
-    dp[0] = 1
-
-    for index in 1..num
-        dp[index] = index*dp[index-1]
+    def initialize(text)
+        @text = text
+        puts "Document: the initial text is '#{text}'"
     end
 
-    return dp[num]
+    def changeText(newText)
+        puts "Document: changing text..."
+        @text = text
+        puts "Document: text was change to '#{text}'"
+    end
+
+    def save
+        ConcreteMemento.save(@text)
+    end
+
+    def restore(memento)
+        @text = memento.text
+        puts "Document: the text was changed to #{@text}"
+    end
 end
 
-puts fatorial(30000)
+class Memento
+    def name
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  
+    def date
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+end
+
