@@ -1,5 +1,5 @@
 class Document
-    attr_acessor :text
+    attr_accessor :text
 
     def initialize(text)
         @text = text
