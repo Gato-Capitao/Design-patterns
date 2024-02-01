@@ -8,12 +8,12 @@ class Document
 
     def changeText(newText)
         puts "Document: changing text..."
-        @text = text
-        puts "Document: text was change to '#{text}'"
+        @text = newText
+        puts "Document: text was change to '#{@text}'"
     end
 
     def save
-        ConcreteMemento.save(@text)
+        ConcreteMemento.new(@text)
     end
 
     def restore(memento)
@@ -38,16 +38,16 @@ class ConcreteMemento < Memento
         @date = Time.now.strftime('%F %T')
     end
 
-    attr_reader :state
+    attr_reader :text
 
     def name
-        "#{@date}: #{@state}"
+        "#{@date}: #{@text}"
     end
 
     attr_reader :date
 end
 
-def CareTaker
+class CareTaker
     def initialize(document)
         @mementos = []
         @document = document
@@ -55,7 +55,7 @@ def CareTaker
 
     def backup
         puts "Saving document state..."
-        mementos << @document.save
+        @mementos << @document.save
     end
 
     def undo
@@ -67,8 +67,36 @@ def CareTaker
 
     def showHistory
         puts "Caretaker: showing history:"
-        for memento in mementos
+        for memento in @mementos
             puts memento.name
         end
     end
 end
+
+puts "Initializing..."
+note = Document.new("If you only do what you can do, you will never be more than you are.")
+careTaker = CareTaker.new(note)
+careTaker.backup()
+puts "\n"
+
+puts "User: I want to change the text."
+note.changeText("What you can do is just the starting point. Unfurl your hidden potential by daring to explore the unknown.")
+careTaker.backup()
+puts "\n"
+
+puts "User: Nah, I don't liked it, let's change again."
+note.changeText("Your capabilities are a vast, uncharted map. Unfold its secrets by boldly venturing beyond the known borders of your comfort zone.")
+careTaker.backup()
+puts "\n"
+
+puts "User: I think it's not good yet."
+note.changeText("Inner peace begins with letting go of the need to control everything.")
+careTaker.backup()
+puts "\n"
+
+careTaker.showHistory()
+puts "\n"
+
+puts "User: I think the second one was the best."
+careTaker.undo()
+careTaker.undo()
