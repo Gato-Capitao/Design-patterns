@@ -1,5 +1,5 @@
 class Document
-    attr_acessor: text
+    attr_acessor :text
 
     def initialize(text)
         @text = text
@@ -38,11 +38,37 @@ class ConcreteMemento < Memento
         @date = Time.now.strftime('%F %T')
     end
 
-    attr_reader: state
+    attr_reader :state
 
     def name
         "#{@date}: #{@state}"
     end
 
-    attr_reader: date
+    attr_reader :date
+end
+
+def CareTaker
+    def initialize(document)
+        @mementos = []
+        @document = document
+    end
+
+    def backup
+        puts "Saving document state..."
+        mementos << @document.save
+    end
+
+    def undo
+        return if @mementos.empty?
+
+        memento = @mementos.pop
+        puts "Caretaker: Restoring state to: #{memento.name}"
+    end
+
+    def showHistory
+        puts "Caretaker: showing history:"
+        for memento in mementos
+            puts memento.name
+        end
+    end
 end
