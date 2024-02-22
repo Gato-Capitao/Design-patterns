@@ -25,3 +25,11 @@ func (proxy *Nginx) checkRateLimit(url string) bool{
 	proxy.rateLimiter[url] = proxy.rateLimiter[url] + 1
 	return true
 }
+
+func (proxy *Nginx) handleRequest(url, method string) (int, string) {
+    allowed := n.checkRateLimiting(url)
+    if !allowed {
+        return 403, "Not Allowed"
+    }
+    return proxy.application.handleRequest(url, method)
+}
