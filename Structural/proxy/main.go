@@ -2,14 +2,24 @@ package main
 
 import "fmt"
 
-func fatorial(num int) int {
-    if num == 1 || num == 0 {
-        return 1
-    }
-
-    return num*fatorial(num-1)
-}
-
 func main() {
-    fmt.Println(fatorial(9))
+
+    nginxServer := newNginxServer()
+    appStatusURL := "/app/status"
+    createuserURL := "/create/user"
+
+    httpCode, body := nginxServer.handleRequest(appStatusURL, "GET")
+    fmt.Printf("\nUrl: %s\nHttpCode: %d\nBody: %s\n", appStatusURL, httpCode, body)
+
+    httpCode, body = nginxServer.handleRequest(appStatusURL, "GET")
+    fmt.Printf("\nUrl: %s\nHttpCode: %d\nBody: %s\n", appStatusURL, httpCode, body)
+
+    httpCode, body = nginxServer.handleRequest(appStatusURL, "GET")
+    fmt.Printf("\nUrl: %s\nHttpCode: %d\nBody: %s\n", appStatusURL, httpCode, body)
+
+    httpCode, body = nginxServer.handleRequest(createuserURL, "POST")
+    fmt.Printf("\nUrl: %s\nHttpCode: %d\nBody: %s\n", appStatusURL, httpCode, body)
+
+    httpCode, body = nginxServer.handleRequest(createuserURL, "GET")
+    fmt.Printf("\nUrl: %s\nHttpCode: %d\nBody: %s\n", appStatusURL, httpCode, body)
 }
